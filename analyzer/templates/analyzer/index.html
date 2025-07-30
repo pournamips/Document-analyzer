@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Legal Document Analyzer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Local Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(to top right, #eef2ff, #fce7f3);
+      color: #333;
+    }
+    header {
+      background: linear-gradient(to right, #6366f1, #8b5cf6, #ec4899);
+      color: white;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    header img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 10px;
+      background: white;
+      padding: 4px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.07);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .left, .right {
+      flex: 1 1 400px;
+    }
+    .left img {
+      width: 100%;
+      border-radius: 12px;
+      border: 2px solid #ddd;
+      box-shadow: 0 6px 10px rgba(0,0,0,0.05);
+    }
+    h2 {
+      color: #4f46e5;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .form-section label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #4f46e5;
+    }
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #a5b4fc;
+      border-radius: 12px;
+      resize: none;
+      height: 200px;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.5rem;
+      background: linear-gradient(to right, #6366f1, #8b5cf6, #ec4899);
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: linear-gradient(to right, #ec4899, #8b5cf6, #6366f1);
+    }
+    #loading {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #6d28d9;
+      display: none;
+    }
+    #resultBox {
+      margin-top: 1.5rem;
+      display: none;
+    }
+    #aiOutput {
+      background: #f3f4f6;
+      border: 1px solid #c7d2fe;
+      padding: 1rem;
+      border-radius: 12px;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      max-height: 300px;
+      font-size: 0.95rem;
+    }
+    @media (max-width: 768px) {
+      header, .container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
+      <h1>Legal Document Analyzer</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="left">
+      <h2>Analyze Documents with AI</h2>
+      <p>Paste your legal text below and our AI will highlight key clauses, detect risks, and suggest improvements.</p>
+      <img src="{% static 'images/logo.jpg' %}" alt="Legal Illustration">
+    </div>
+
+    <div class="right form-section">
+      <label for="legalText"><i class="fa-solid fa-file-lines"></i> Paste your legal document:</label>
+      <textarea id="legalText" placeholder="Enter contract or agreement text here..."></textarea>
+      <button onclick="submitText()"><i class="fa-solid fa-wand-magic-sparkles"></i> Analyze</button>
+      <div id="loading"><i class="fa-solid fa-spinner fa-spin"></i> Analyzing...</div>
+      <div id="resultBox">
+        <h3 style="color:#4f46e5; font-weight:bold;"><i class="fa-solid fa-magnifying-glass"></i> AI Feedback:</h3>
+        <pre id="aiOutput"></pre>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function submitText() {
+      const input = document.getElementById("legalText").value.trim();
+      const loading = document.getElementById("loading");
+      const resultBox = document.getElementById("resultBox");
+      const output = document.getElementById("aiOutput");
+
+      if (!input) {
+        output.innerText = "⚠️ Please enter some text to analyze.";
+        resultBox.style.display = "block";
+        return;
+      }
+
+      resultBox.style.display = "none";
+      loading.style.display = "block";
+      output.innerText = "";
+
+      try {
+        const response = await fetch('/analyze/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: input })
+        });
+
+        const data = await response.json();
+        loading.style.display = "none";
+
+        if (data.ai_feedback) {
+          output.innerText = data.ai_feedback;
+          resultBox.style.display = "block";
+        } else {
+          output.innerText = "⚠️ No feedback returned.";
+          resultBox.style.display = "block";
+        }
+      } catch (err) {
+        loading.style.display = "none";
+        output.innerText = "❌ Error: Unable to analyze document.";
+        resultBox.style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
