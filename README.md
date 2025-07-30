@@ -93,6 +93,50 @@ python manage.py runserver
 
 
 🧠 Example Prompt
-Paste this into the input box:
+Paste this into the input box:-
+
+This Agreement is made effective as of July 1, 2025, between Party A and Party B.
+
+1. Confidentiality: Both parties agree to keep all proprietary information confidential for a period of 3 years from the date of disclosure.
+
+2. Liability: Party A shall not be liable for any indirect, incidental, or consequential damages arising from this Agreement.
+
+3. Termination: Either party may terminate this Agreement with 30 days' written notice.
+
+4. Governing Law: This Agreement shall be governed by the laws of the State of California.
+
+IN WITNESS WHEREOF, the parties hereto have executed this Agreement as of the date first above written.
+
+
+Analyzed output :-
+
+
+**Legal Analysis**
+
+**Risky Clauses:**
+
+1. **Limited Confidentiality Period**: The confidentiality period is limited to 3 years, which may be insufficient for Party B if they share sensitive information with Party A. A longer period or a perpetual confidentiality obligation might be more appropriate.
+2. **Limitation of Liability**: Party A is exempt from liability for indirect, incidental, or consequential damages. This clause may unfairly shift the risk to Party B, who may be exposed to significant losses.
+
+**Missing Elements:**
+
+1. **Definitions**: The agreement lacks definitions for key terms, such as "proprietary information" and "indirect, incidental, or consequential damages." This ambiguity may lead to disputes and misunderstandings.
+2. **Scope of Work**: The agreement does not outline the specific services or obligations of each party, which may cause confusion and disagreements.
+3. **Dispute Resolution**: There is no provision for resolving disputes, which may lead to costly and time-consuming litigation.
+
+**Regulatory Compliance:**
+
+The agreement does not address compliance with specific regulations or laws, such as data privacy laws (e.g., CCPA, GDPR) or industry-specific regulations. It is essential to ensure compliance with relevant laws and regulations.
+
+**Plain Language Summary:**
+
+This agreement is between Party A and Party B, and it covers confidentiality, liability, termination, and governing law. The key points are:
+
+* Both parties must keep confidential any proprietary information shared for 3 years.
+* Party A is not responsible for indirect, incidental, or consequential damages.
+* Either party can terminate the agreement with 30 days' written notice.
+* The agreement is governed by California state laws.
+
+However, the agreement has some limitations and omissions that may put Party B at risk. It's recommended to review and revise the agreement to address these concerns before signing.
 
 This agreement is between Party A and Party B. No termination clause is mentioned. No reference to dispute resolution or indemnity. The agreement will begin on August 1, 2025.
